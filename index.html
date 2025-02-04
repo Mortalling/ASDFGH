@@ -3,20 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Вишлист подарков</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Вишлист Подарков</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .gift {
+            margin: 10px 0;
+        }
+        .reserved {
+            color: gray;
+            text-decoration: line-through;
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Вишлист подарков</h1>
-        <ul id="gift-list">
-            <li>Книга <button onclick="reserveGift(this)">Забронировать</button></li>
-            <li>Настольная игра <button onclick="reserveGift(this)">Забронировать</button></li>
-            <li>Ароматическая свеча <button onclick="reserveGift(this)">Забронировать</button></li>
-            <li>Подарочный сертификат <button onclick="reserveGift(this)">Забронировать</button></li>
-        </ul>
+    <h1>Вишлист Подарков</h1>
+    <div id="gift-list">
+        <div class="gift" data-gift="Книга">
+            <span>Книга</span>
+            <button>Зарезервировать</button>
+        </div>
+        <div class="gift" data-gift="Игрушка">
+            <span>Игрушка</span>
+            <button>Зарезервировать</button>
+        </div>
+        <div class="gift" data-gift="Подарочная карта">
+            <span>Подарочная карта</span>
+            <button>Зарезервировать</button>
+        </div>
     </div>
 
-    <script src="script.js"></script>
+    <script>
+        document.querySelectorAll('.gift button').forEach(button => {
+            button.addEventListener('click', function() {
+                const giftDiv = this.parentElement;
+                const giftName = giftDiv.getAttribute('data-gift');
+
+                // Проверка, зарезервирован ли подарок
+                if (giftDiv.classList.contains('reserved')) {
+                    alert('Этот подарок уже зарезервирован!');
+                } else {
+                    giftDiv.classList.add('reserved');
+                    this.disabled = true; // Деактивируем кнопку
+                    alert(giftName + ' зарезервирован!');
+                }
+            });
+        });
+    </script>
 </body>
 </html>
