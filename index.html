@@ -24,18 +24,50 @@
         <div class="gift" data-gift="Книга">
             <span>Книга</span>
             <button>Зарезервировать</button>
+            <span class="reserved-info"></span>
         </div>
         <div class="gift" data-gift="Игрушка">
             <span>Игрушка</span>
             <button>Зарезервировать</button>
+            <span class="reserved-info"></span>
         </div>
         <div class="gift" data-gift="Подарочная карта">
             <span>Подарочная карта</span>
             <button>Зарезервировать</button>
+            <span class="reserved-info"></span>
         </div>
     </div>
 
     <script>
+        // Функция для загрузки данных из локального хранилища
+        function loadReservations() {
+            const reservations = JSON.parse(localStorage.getItem('reservations')) || {};
+            for (const gift in reservations) {
+                const giftDiv = document.querySelector(.gift[data-gift="${gift}"]);
+                if (giftDiv) {
+                    giftDiv.classList.add('reserved');
+                    giftDiv.querySelector('button').disabled = true;
+                    giftDiv.querySelector('.reserved-info').textContent = Зарезервировано: ${reservations[gift]};
+                }
+            }
+        }
+
+        // Функция для резервирования подарка
+        function reserveGift(giftName) {
+            const name = prompt("Введите ваше имя для бронирования:");
+            if (name) {
+                const reservations = JSON.parse(localStorage.getItem('reservations')) || {};
+                reservations[giftName] = name;
+                localStorage.setItem('reservations', JSON.stringify(reservations));
+                loadReservations();
+                alert(${giftName} зарезервирован на имя ${name}!);
+            }
+        }
+
+        // Загрузка данных при загрузке страницы
+        loadReservations();
+
+        // Добавление обработчиков событий к кнопкам
         document.querySelectorAll('.gift button').forEach(button => {
             button.addEventListener('click', function() {
                 const giftDiv = this.parentElement;
@@ -45,9 +77,9 @@
                 if (giftDiv.classList.contains('reserved')) {
                     alert('Этот подарок уже зарезервирован!');
                 } else {
+                    reserveGift(giftName);
                     giftDiv.classList.add('reserved');
                     this.disabled = true; // Деактивируем кнопку
-                    alert(giftName + ' зарезервирован!');
                 }
             });
         });
