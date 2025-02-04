@@ -74,12 +74,12 @@
                 const giftName = giftDiv.getAttribute('data-gift');
 
                 // Проверка, зарезервирован ли подарок
-                if (giftDiv.classList.contains('reserved')) {
-                    alert('Этот подарок уже зарезервирован!');
-                } else {
+                if (!giftDiv.classList.contains('reserved')) {
                     reserveGift(giftName);
                     giftDiv.classList.add('reserved');
                     this.disabled = true; // Деактивируем кнопку
+                } else {
+                    alert('Этот подарок уже зарезервирован!');
                 }
             });
         });
